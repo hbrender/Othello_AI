@@ -46,10 +46,12 @@ class System():
                 else:
                     if self.AI.can_move():
                         x,y = self.AI.get_move()
+                        moveX = x
+                        moveY = y
+                        moveC = self.AI.color
                         self.board[x][y] = self.AI.color
                     else:
                         print("AI cannot move")
-                    self.display_board()
                     self.turn = 'p'
         
             else:
@@ -58,10 +60,73 @@ class System():
                     self.end_game()
                 else:
                     x,y = self.player.get_move()
+                    moveX = x
+                    moveY = y
+                    moveC = self.AI.color
                     self.board[x][y] = self.player.color
-                    self.display_board()
                     self.turn = 'a'
-            self.update_scores()
+            self.update_scores(moveX, moveY, moveC)
+            self.display_board()
+
+    def update_scores(self, x, y , color):
+        # for each square around it, check and see if it starts with the opposite
+        # color and then ends with the true color
+        if color == 'B':
+            oppositeColor = 'W'
+        else:
+            oppositeColor = 'B'
+
+        #check all 4 moves around it
+        changeColorList = []
+
+        i = 1
+        tempList = []
+        while self.board[x-i][y] == oppositeColor:
+            tempList.append([x,y])
+            i += 1
+        if self.board[x-i][y] == color:
+            for item in tempList:
+                changeColorList.append(item)
+
+        i = 1
+        tempList = []
+        while self.board[x+i][y] == oppositeColor:
+            tempList.append([x,y])
+            i += 1
+        if self.board[x+i][y] == color:
+            for item in tempList:
+                changeColorList.append(item)
+
+        i = 1
+        tempList = []
+        while self.board[x][y+i] == oppositeColor:
+            tempList.append([x,y])
+            i += 1
+        if self.board[x][y+i] == color:
+            for item in tempList:
+                changeColorList.append(item)
+
+        i = 1
+        tempList = []
+        while self.board[x][y-i] == oppositeColor:
+            tempList.append([x,y])
+            i += 1
+        if self.board[x][y-i] == color:
+            for item in tempList:
+                changeColorList.append(item)
+
+
+        for pair in changeColorList:
+            newX = pair[0]
+            newY = pair[1]
+            self.board[newX][newY+1] = color 
+            
+            if color == self.AI.color:
+                self.a_score += 1
+                self.p_score -= 1
+            else:
+                self.p_score += 1
+                self.a_score -= 1
 
     def end_game(self):
         print("Ending game")
@@ -79,18 +144,5 @@ class System():
                 if self.board[i][j] == '-':
                     return False
         return True
-
-    def update_scores(self): pass
-
-
-
-
-
-
-
-
-
-
-
 
 
