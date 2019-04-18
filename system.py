@@ -203,6 +203,57 @@ class System():
                 self.board[newX][newY] = color
                 changeColorList.append(pair)
 
+        #CHECK DIAGNOALS
+        i = 1
+        tempList = []
+        while self.board[x-i][y-i] == oppositeColor:
+            tempList.append([x-i,y-i])
+            i += 1
+        if self.board[x-i][y-i] == color:
+            for pair in tempList:
+                newX = pair[0]
+                newY = pair[1]
+                self.board[newX][newY] = color
+                changeColorList.append(pair)
+
+        i = 1
+        tempList = []
+        while self.board[x+i][y-i] == oppositeColor:
+            tempList.append([x+i,y-i])
+            i += 1
+        if self.board[x+i][y-i] == color:
+            for pair in tempList:
+                newX = pair[0]
+                newY = pair[1]
+                self.board[newX][newY] = color
+                changeColorList.append(pair)
+
+        i = 1
+        tempList = []
+        while self.board[x-i][y+i] == oppositeColor:
+            tempList.append([x-i,y+i])
+            i += 1
+        if self.board[x-i][y+i] == color:
+            for pair in tempList:
+                newX = pair[0]
+                newY = pair[1]
+                self.board[newX][newY] = color
+                changeColorList.append(pair)
+
+        i = 1
+        tempList = []
+        while self.board[x+i][y+i] == oppositeColor:
+            tempList.append([x+i,y+i])
+            i += 1
+        if self.board[x+i][y+i] == color:
+            for pair in tempList:
+                newX = pair[0]
+                newY = pair[1]
+                self.board[newX][newY] = color
+                changeColorList.append(pair)
+
+
+
         #adjust scores
         for pair in changeColorList:
             if color == self.AI.color:
