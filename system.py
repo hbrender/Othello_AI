@@ -143,51 +143,68 @@ class System():
         else:
             oppositeColor = 'B'
 
+        if color == self.AI.color:
+            self.a_score += 1
+        else:
+            self.p_score += 1
+
         #check all 4 moves around it
         changeColorList = []
-            
+        
+        #Changes tokens above where the one was placed
         i = 1
         tempList = []
         while self.board[x-i][y] == oppositeColor:
-            tempList.append([x,y])
+            tempList.append([x-i,y])
             i += 1
         if self.board[x-i][y] == color:
-            for item in tempList:
-                changeColorList.append(item)
+            for pair in tempList:
+                newX = pair[0]
+                newY = pair[1]
+                self.board[newX][newY] = color
+                changeColorList.append(pair)
 
+        #places tokens below where the one was placed
         i = 1
         tempList = []
         while self.board[x+i][y] == oppositeColor:
-            tempList.append([x,y])
+            tempList.append([x+i,y])
             i += 1
         if self.board[x+i][y] == color:
-            for item in tempList:
-                changeColorList.append(item)
-        
+            for pair in tempList:
+                newX = pair[0]
+                newY = pair[1]
+                self.board[newX][newY] = color
+
+                changeColorList.append(pair)
+
         i = 1
         tempList = []
         while self.board[x][y+i] == oppositeColor:
-            tempList.append([x,y])
+            tempList.append([x,y+i])
             i += 1
         if self.board[x][y+i] == color:
-            for item in tempList:
-                changeColorList.append(item)
+            for pair in tempList:
+                newX = pair[0]
+                newY = pair[1]
+                self.board[newX][newY] = color
+
+                changeColorList.append(pair)
             
         i = 1
         tempList = []
         while self.board[x][y-i] == oppositeColor:
-            tempList.append([x,y])
+            tempList.append([x,y-i])
             i += 1
         if self.board[x][y-i] == color:
-            for item in tempList:
-                changeColorList.append(item)
+            for pair in tempList:
+                newX = pair[0]
+                newY = pair[1]
+                self.board[newX][newY] = color
+                changeColorList.append(pair)
 
+        #adjust scores
         for pair in changeColorList:
-            newX = pair[0]
-            newY = pair[1]
-            #TODO: only works for horizontal move on the left
-            self.board[newX][newY+1] = color
-            
             if color == self.AI.color:
                 self.a_score += 1
                 self.p_score -= 1
