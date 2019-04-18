@@ -9,7 +9,7 @@ class AI():
         return x-1,y
 
     def can_move(self):
-        answer = raw_input("Can AI move (Y/N)? ")
+        answer = raw_input("\nCan AI move (Y/N)? ")
         if answer == "Y":
             return True
         else:
