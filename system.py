@@ -82,6 +82,14 @@ class System():
                 if ready == "Q":
                     self.end_game()
                 else:
+                    # count down 10 seconds
+                    for i in range(10,0,-1):
+                        print(i)
+                        time.sleep(1)
+                    answer = raw_input("Did AI forfeit? (Y/N) ")
+                    if answer == "Y":
+                        print("AI forefeits. Player wins.")
+                        exit(0)
                     if self.AI.can_move():
                         x,y = self.AI.get_move()
                         moveX = x
