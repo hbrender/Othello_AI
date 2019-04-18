@@ -70,6 +70,7 @@ class System():
 
     def play_game(self):
         while(not self.board_full()):
+            skip_turn = False
             # keep track of prior board
             for i in range(8):
                 for j in range(8):
@@ -88,7 +89,8 @@ class System():
                         moveC = self.AI.color
                         self.board[x][y] = self.AI.color
                     else:
-                        print("AI cannot move.")
+                        print("AI cannot move.\n")
+                        skip_turn = True
                     self.turn = 'p'
             else:
                 ready = raw_input("P are you ready to make a move? (Q for quit) ")
@@ -105,23 +107,24 @@ class System():
             self.prior_a_score = self.a_score
             self.prior_p_score = self.p_score
             
-            self.update_scores(moveX, moveY, moveC)
-            self.display_board()
-
-            answer = raw_input("Return to prior board? (Y/N) ")
-            if answer == "Y":
-                # return to prior states
-                for i in range(8):
-                    for j in range(8):
-                        self.board[i][j] = self.prior_board[i][j]
-                self.a_score = self.prior_a_score
-                self.p_score = self.prior_p_score
-                # swap turns back
-                if self.turn == 'a':
-                    self.turn = 'p'
-                elif self.turn == 'p':
-                    self.turn = 'a'
+            if not skip_turn:
+                self.update_scores(moveX, moveY, moveC)
                 self.display_board()
+
+                answer = raw_input("Return to prior board? (Y/N) ")
+                if answer == "Y":
+                    # return to prior states
+                    for i in range(8):
+                        for j in range(8):
+                            self.board[i][j] = self.prior_board[i][j]
+                    self.a_score = self.prior_a_score
+                    self.p_score = self.prior_p_score
+                    # swap turns back
+                    if self.turn == 'a':
+                        self.turn = 'p'
+                    elif self.turn == 'p':
+                        self.turn = 'a'
+                    self.display_board()
 
     # TODO: a_score and p_score are not always correct
     def update_scores(self, x, y , color):
