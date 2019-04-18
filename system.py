@@ -134,7 +134,6 @@ class System():
                         self.turn = 'a'
                     self.display_board()
 
-    # TODO: a_score and p_score are not always correct
     def update_scores(self, x, y , color):
         # for each square around it, check and see if it starts with the opposite
         # color and then ends with the true color
@@ -255,13 +254,20 @@ class System():
 
 
         #adjust scores
-        for pair in changeColorList:
-            if color == self.AI.color:
-                self.a_score += 1
-                self.p_score -= 1
-            else:
-                self.p_score += 1
-                self.a_score -= 1
+        if changeColorList == []:
+            print
+            print("----------------------------------")
+            print("       ILLEGAL MOVE ")
+            print("-----------------------------------")
+            print
+        else:
+            for pair in changeColorList:
+                if color == self.AI.color:
+                    self.a_score += 1
+                    self.p_score -= 1
+                else:
+                    self.p_score += 1
+                    self.a_score -= 1
 
     def end_game(self):
         print
