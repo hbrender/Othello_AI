@@ -47,7 +47,7 @@ class System():
                 print(self.board[i][j]),
             print
         print("AI score: " + str(self.a_score))
-        print("player score: " + str(self.p_score))
+        print("Player score: " + str(self.p_score))
         print
     
     def ask_color(self):
@@ -82,34 +82,28 @@ class System():
                 if ready == "Q":
                     self.end_game()
                 else:
-                    # count down 10 seconds
-                    for i in range(10,0,-1):
-                        print(i)
-                        time.sleep(1)
-                    answer = raw_input("Did AI forfeit? (Y/N) ")
-                    if answer == "Y":
-                        print("AI forefeits. Player wins.")
-                        exit(0)
-                    if self.AI.can_move():
-                        x,y = self.AI.get_move()
-                        moveX = x
-                        moveY = y
-                        moveC = self.AI.color
-                        self.board[x][y] = self.AI.color
-                    else:
-                        print("AI cannot move.\n")
-                        skip_turn = True
+                    x,y = self.AI.get_move(self)
+                    moveX = x
+                    moveY = y
+                    moveC = self.AI.color
+                    self.board[x][y] = self.AI.color
                     self.turn = 'p'
             else:
                 ready = raw_input("P are you ready to make a move? (Q for quit) ")
                 if ready == "Q":
                     self.end_game()
                 else:
-                    x,y = self.player.get_move()
+                    x,y = self.player.get_move(self)
                     moveX = x
                     moveY = y
                     moveC = self.player.color
-                    self.board[x][y] = self.player.color
+
+                    #below sees if we cannot move
+                    if x == -1 and y == -1:
+                        print("Players AI cannot move")
+                        skip_turn = True
+                    else:
+                        self.board[x][y] = self.player.color
                     self.turn = 'a'
             # keep track of prior boards
             self.prior_a_score = self.a_score
@@ -250,8 +244,6 @@ class System():
                 newY = pair[1]
                 self.board[newX][newY] = color
                 changeColorList.append(pair)
-
-
 
         #adjust scores
         if changeColorList == []:
