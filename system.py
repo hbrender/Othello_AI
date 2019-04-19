@@ -92,7 +92,7 @@ class System():
                         print("Player AI cannot move")
                         skip_turn = True
                     else:
-                        self.board[x][y] = self.AI.color
+                        self.board[x][y] = '$'
                     self.turn = 'p'
             else:
                 ready = raw_input("P are you ready to make a move? (Q for quit) ")
@@ -103,7 +103,7 @@ class System():
                     moveX = x
                     moveY = y
                     moveC = self.player.color
-                    self.board[x][y] = self.player.color
+                    self.board[x][y] = '$'
                     self.turn = 'a'
             # keep track of prior boards
             self.prior_a_score = self.a_score
@@ -126,6 +126,17 @@ class System():
                         self.turn = 'p'
                     elif self.turn == 'p':
                         self.turn = 'a'
+                    self.display_board()
+                else:
+                    #run over board and change all $ tokens to the color
+                    if self.turn == 'a':
+                        cur_color = self.player.color
+                    else:
+                        cur_color = self.AI.color
+                    for x in range(8):
+                        for y in range(8):
+                            if self.board[x][y] == '$':
+                                self.board[x][y] = cur_color
                     self.display_board()
 
     def update_scores(self, x, y , color):
@@ -154,7 +165,7 @@ class System():
             for pair in tempList:
                 newX = pair[0]
                 newY = pair[1]
-                self.board[newX][newY] = color
+                self.board[newX][newY] = '$'
                 changeColorList.append(pair)
 
         #places tokens below where the one was placed
@@ -167,7 +178,7 @@ class System():
             for pair in tempList:
                 newX = pair[0]
                 newY = pair[1]
-                self.board[newX][newY] = color
+                self.board[newX][newY] = '$'
 
                 changeColorList.append(pair)
 
@@ -180,7 +191,7 @@ class System():
             for pair in tempList:
                 newX = pair[0]
                 newY = pair[1]
-                self.board[newX][newY] = color
+                self.board[newX][newY] ='$'
 
                 changeColorList.append(pair)
             
@@ -193,7 +204,7 @@ class System():
             for pair in tempList:
                 newX = pair[0]
                 newY = pair[1]
-                self.board[newX][newY] = color
+                self.board[newX][newY] ='$'
                 changeColorList.append(pair)
 
         #CHECK DIAGNOALS
@@ -206,7 +217,7 @@ class System():
             for pair in tempList:
                 newX = pair[0]
                 newY = pair[1]
-                self.board[newX][newY] = color
+                self.board[newX][newY] ='$'
                 changeColorList.append(pair)
 
         i = 1
@@ -218,7 +229,7 @@ class System():
             for pair in tempList:
                 newX = pair[0]
                 newY = pair[1]
-                self.board[newX][newY] = color
+                self.board[newX][newY] ='$'
                 changeColorList.append(pair)
 
         i = 1
@@ -230,7 +241,7 @@ class System():
             for pair in tempList:
                 newX = pair[0]
                 newY = pair[1]
-                self.board[newX][newY] = color
+                self.board[newX][newY] ='$'
                 changeColorList.append(pair)
 
         i = 1
@@ -242,7 +253,7 @@ class System():
             for pair in tempList:
                 newX = pair[0]
                 newY = pair[1]
-                self.board[newX][newY] = color
+                self.board[newX][newY] ='$'
                 changeColorList.append(pair)
 
         #adjust scores

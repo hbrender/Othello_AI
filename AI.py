@@ -10,7 +10,7 @@ class AI():
                     i = 1
                     while s.board[x-i][y] != self.color and s.board[x-i][y] != '-':
                         i += 1
-                    if s.board[x-i][y] == self.color:
+                    if s.board[x-i][y]  == self.color and i > 1:
                         move=True
                 except IndexError:
                     pass
@@ -20,7 +20,7 @@ class AI():
                     i = 1
                     while s.board[x+i][y] != self.color and s.board[x+i][y] != '-':
                         i += 1
-                    if s.board[x+i][y] == self.color:
+                    if s.board[x+i][y] == self.color and i > 1:
                         move=True
                 except IndexError:
                     pass
@@ -29,7 +29,7 @@ class AI():
                     i = 1
                     while s.board[x][y+i] != self.color and s.board[x][y+i] != '-':
                         i += 1
-                    if s.board[x][y+i] == self.color:
+                    if s.board[x][y+i] == self.color and i > 1:
                         move=True
                 except IndexError:
                     pass
@@ -39,7 +39,7 @@ class AI():
                     i = 1
                     while s.board[x][y-i] != self.color and s.board[x][y-i] != '-':
                         i += 1
-                    if s.board[x][y-i] == self.color:
+                    if s.board[x][y-i] == self.color and i > 1:
                         move=True
                 except IndexError:
                     pass
@@ -49,7 +49,7 @@ class AI():
                     i = 1
                     while s.board[x-i][y-i] != self.color and s.board[x-i][y-i] != '-':
                         i += 1
-                    if s.board[x-i][y-i] == self.color:
+                    if s.board[x-i][y-i] == self.color and i > 1:
                         move=True
                 except IndexError:
                     pass
@@ -58,7 +58,7 @@ class AI():
                     i = 1
                     while s.board[x+i][y-i] != self.color and s.board[x+i][y-i] != '-':
                         i += 1
-                    if s.board[x+i][y-i] == self.color:
+                    if s.board[x+i][y-i] == self.color and i > 1:
                        move=True
                 except IndexError:
                     pass
@@ -67,7 +67,7 @@ class AI():
                     i = 1
                     while s.board[x-i][y+i] != self.color and s.board[x-i][y+i] != '-':
                         i += 1
-                    if s.board[x-i][y+i] == self.color:
+                    if s.board[x-i][y+i] == self.color and i > 1:
                          move=True
                 except IndexError:
                     pass
@@ -76,13 +76,11 @@ class AI():
                     i = 1
                     while s.board[x+i][y+i] != self.color and s.board[x+i][y+i] != '-':
                         i += 1
-                    if s.board[x+i][y+i] == self.color:
+                    if s.board[x+i][y+i] == self.color and i > 1:
                         move=True
                 except IndexError:
                     pass
 
-
-                #adjust scores
                 if move and s.board[x][y] == '-' :
                     return x,y
                 else:
