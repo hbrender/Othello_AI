@@ -86,7 +86,13 @@ class System():
                     moveX = x
                     moveY = y
                     moveC = self.AI.color
-                    self.board[x][y] = self.AI.color
+
+                    #below sees if we cannot move
+                    if x == -1 and y == -1:
+                        print("Player AI cannot move")
+                        skip_turn = True
+                    else:
+                        self.board[x][y] = self.AI.color
                     self.turn = 'p'
             else:
                 ready = raw_input("P are you ready to make a move? (Q for quit) ")
@@ -97,13 +103,7 @@ class System():
                     moveX = x
                     moveY = y
                     moveC = self.player.color
-
-                    #below sees if we cannot move
-                    if x == -1 and y == -1:
-                        print("Players AI cannot move")
-                        skip_turn = True
-                    else:
-                        self.board[x][y] = self.player.color
+                    self.board[x][y] = self.player.color
                     self.turn = 'a'
             # keep track of prior boards
             self.prior_a_score = self.a_score
