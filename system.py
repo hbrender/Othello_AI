@@ -46,8 +46,12 @@ class System():
             for j in range(8):
                 print(self.board[i][j]),
             print
-        print("AI score: " + str(self.a_score))
-        print("Player score: " + str(self.p_score))
+        if self.AI.color == "W":
+            print("White score: " + str(self.a_score))
+            print("Black score: " + str(self.p_score))
+        else:
+            print("White score: " + str(self.p_score))
+            print("Black score: " + str(self.a_score))
         print
     
     def ask_color(self):
@@ -82,7 +86,12 @@ class System():
                 if ready == "Q":
                     self.end_game()
                 else:
+                    start_time = time.time()
                     x,y = self.AI.get_move(self)
+                    end_time = time.time()
+                    if (end_time-start_time > 10):
+                        print("Player forefits game")
+                        exit(0)
                     moveX = x
                     moveY = y
                     moveC = self.AI.color
@@ -99,7 +108,12 @@ class System():
                 if ready == "Q":
                     self.end_game()
                 else:
+                    start_time = time.time()
                     x,y = self.player.get_move(self)
+                    end_time = time.time()
+                    if (end_time-start_time > 10):
+                        print("Player forefits game")
+                        exit(0)
                     moveX = x
                     moveY = y
                     moveC = self.player.color

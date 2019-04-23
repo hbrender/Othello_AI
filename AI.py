@@ -1,8 +1,11 @@
+import time
+
 class AI():
     def __init__(self):
         self.color = ""
 
     def get_move(self,s):
+        #time.sleep(10)
         move = False
         for x in range(8):
             for y in range(8):
