@@ -168,107 +168,137 @@ class System():
 
         #check all 4 moves around it
         changeColorList = []
+
+        #keep track for if it is players move
         
+        try:
         #Changes tokens above where the one was placed
-        i = 1
-        tempList = []
-        while self.board[x-i][y] == oppositeColor:
-            tempList.append([x-i,y])
-            i += 1
-        if self.board[x-i][y] == color:
-            for pair in tempList:
-                newX = pair[0]
-                newY = pair[1]
-                self.board[newX][newY] = '$'
-                changeColorList.append(pair)
+            i = 1
+            tempList = []
+            while self.board[x-i][y] == oppositeColor:
+                tempList.append([x-i,y])
+                i += 1
+            if self.board[x-i][y] == color:
+                for pair in tempList:
+                    newX = pair[0]
+                    newY = pair[1]
+                    self.board[newX][newY] = '$'
+                    changeColorList.append(pair)
+        except IndexError:
+            pass
 
         #places tokens below where the one was placed
-        i = 1
-        tempList = []
-        while self.board[x+i][y] == oppositeColor:
-            tempList.append([x+i,y])
-            i += 1
-        if self.board[x+i][y] == color:
-            for pair in tempList:
-                newX = pair[0]
-                newY = pair[1]
-                self.board[newX][newY] = '$'
+        try:
 
-                changeColorList.append(pair)
+            i = 1
+            tempList = []
+            while self.board[x+i][y] == oppositeColor:
+                tempList.append([x+i,y])
+                i += 1
+            if self.board[x+i][y] == color:
+                for pair in tempList:
+                    newX = pair[0]
+                    newY = pair[1]
+                    self.board[newX][newY] = '$'
+                    changeColorList.append(pair)
 
-        i = 1
-        tempList = []
-        while self.board[x][y+i] == oppositeColor:
-            tempList.append([x,y+i])
-            i += 1
-        if self.board[x][y+i] == color:
-            for pair in tempList:
-                newX = pair[0]
-                newY = pair[1]
-                self.board[newX][newY] ='$'
+        except IndexError:
+            pass
 
-                changeColorList.append(pair)
+        try:
+
+            i = 1
+            tempList = []
+            while self.board[x][y+i] == oppositeColor:
+                tempList.append([x,y+i])
+                i += 1
+            if self.board[x][y+i] == color:
+                for pair in tempList:
+                    newX = pair[0]
+                    newY = pair[1]
+                    self.board[newX][newY] ='$'
+                    changeColorList.append(pair)
+
+        except IndexError:
+            pass
             
-        i = 1
-        tempList = []
-        while self.board[x][y-i] == oppositeColor:
-            tempList.append([x,y-i])
-            i += 1
-        if self.board[x][y-i] == color:
-            for pair in tempList:
-                newX = pair[0]
-                newY = pair[1]
-                self.board[newX][newY] ='$'
-                changeColorList.append(pair)
+        try:
+            i = 1
+            tempList = []
+            while self.board[x][y-i] == oppositeColor:
+                tempList.append([x,y-i])
+                i += 1
+            if self.board[x][y-i] == color:
+                for pair in tempList:
+                    newX = pair[0]
+                    newY = pair[1]
+                    self.board[newX][newY] ='$'
+                    changeColorList.append(pair)
+        except IndexError:
+            pass
 
+        try:
         #CHECK DIAGNOALS
-        i = 1
-        tempList = []
-        while self.board[x-i][y-i] == oppositeColor:
-            tempList.append([x-i,y-i])
-            i += 1
-        if self.board[x-i][y-i] == color:
-            for pair in tempList:
-                newX = pair[0]
-                newY = pair[1]
-                self.board[newX][newY] ='$'
-                changeColorList.append(pair)
+            i = 1
+            tempList = []
+            while self.board[x-i][y-i] == oppositeColor:
+                tempList.append([x-i,y-i])
+                i += 1
+            if self.board[x-i][y-i] == color:
+                for pair in tempList:
+                    newX = pair[0]
+                    newY = pair[1]
+                    self.board[newX][newY] ='$'
+                    changeColorList.append(pair)
+        except IndexError:
+            pass
 
-        i = 1
-        tempList = []
-        while self.board[x+i][y-i] == oppositeColor:
-            tempList.append([x+i,y-i])
-            i += 1
-        if self.board[x+i][y-i] == color:
-            for pair in tempList:
-                newX = pair[0]
-                newY = pair[1]
-                self.board[newX][newY] ='$'
-                changeColorList.append(pair)
 
-        i = 1
-        tempList = []
-        while self.board[x-i][y+i] == oppositeColor:
-            tempList.append([x-i,y+i])
-            i += 1
-        if self.board[x-i][y+i] == color:
-            for pair in tempList:
-                newX = pair[0]
-                newY = pair[1]
-                self.board[newX][newY] ='$'
-                changeColorList.append(pair)
+        try:
+            i = 1
+            tempList = []
+            while self.board[x+i][y-i] == oppositeColor:
+                tempList.append([x+i,y-i])
+                i += 1
+            if self.board[x+i][y-i] == color:
+                for pair in tempList:
+                    newX = pair[0]
+                    newY = pair[1]
+                    self.board[newX][newY] ='$'
+                    changeColorList.append(pair)
+        except IndexError:
+            pass
 
-        i = 1
-        tempList = []
-        while self.board[x+i][y+i] == oppositeColor:
-            tempList.append([x+i,y+i])
-            i += 1
-        if self.board[x+i][y+i] == color:
-            for pair in tempList:
-                newX = pair[0]
-                newY = pair[1]
-                self.board[newX][newY] ='$'
-                changeColorList.append(pair)
+        try:
+            i = 1
+            tempList = []
+            while self.board[x-i][y+i] == oppositeColor:
+                tempList.append([x-i,y+i])
+                i += 1
+            if self.board[x-i][y+i] == color:
+                for pair in tempList:
+                    newX = pair[0]
+                    newY = pair[1]
+                    self.board[newX][newY] ='$'
+                    changeColorList.append(pair)
+        except IndexError:
+            pass
+
+
+        try:
+            i = 1
+            tempList = []
+            while self.board[x+i][y+i] == oppositeColor:
+                tempList.append([x+i,y+i])
+                i += 1
+            if self.board[x+i][y+i] == color:
+                for pair in tempList:
+                    newX = pair[0]
+                    newY = pair[1]
+                    self.board[newX][newY] ='$'
+                    changeColorList.append(pair)
+        except IndexError:
+            pass
 
         #adjust scores
         if changeColorList == []:
