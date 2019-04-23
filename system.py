@@ -179,6 +179,8 @@ class System():
                 tempList.append([x-i,y])
                 i += 1
             if self.board[x-i][y] == color:
+                if tempList != []:
+                    self.board[x-i][y] = '$'
                 for pair in tempList:
                     newX = pair[0]
                     newY = pair[1]
@@ -196,6 +198,8 @@ class System():
                 tempList.append([x+i,y])
                 i += 1
             if self.board[x+i][y] == color:
+                if tempList != []:
+                    self.board[x+i][y] = '$'
                 for pair in tempList:
                     newX = pair[0]
                     newY = pair[1]
@@ -213,6 +217,8 @@ class System():
                 tempList.append([x,y+i])
                 i += 1
             if self.board[x][y+i] == color:
+                if tempList != []:
+                    self.board[x][y+i] = '$'
                 for pair in tempList:
                     newX = pair[0]
                     newY = pair[1]
@@ -229,6 +235,8 @@ class System():
                 tempList.append([x,y-i])
                 i += 1
             if self.board[x][y-i] == color:
+                if tempList != []:
+                    self.board[x][y-i] = '$'
                 for pair in tempList:
                     newX = pair[0]
                     newY = pair[1]
@@ -245,6 +253,8 @@ class System():
                 tempList.append([x-i,y-i])
                 i += 1
             if self.board[x-i][y-i] == color:
+                if tempList != []:
+                    self.board[x-i][y-i] = '$'
                 for pair in tempList:
                     newX = pair[0]
                     newY = pair[1]
@@ -261,6 +271,8 @@ class System():
                 tempList.append([x+i,y-i])
                 i += 1
             if self.board[x+i][y-i] == color:
+                if tempList != []:
+                    self.board[x+i][y-i] = '$'
                 for pair in tempList:
                     newX = pair[0]
                     newY = pair[1]
@@ -276,6 +288,8 @@ class System():
                 tempList.append([x-i,y+i])
                 i += 1
             if self.board[x-i][y+i] == color:
+                if tempList != []:
+                    self.board[x-i][y+i] = '$'
                 for pair in tempList:
                     newX = pair[0]
                     newY = pair[1]
@@ -292,6 +306,8 @@ class System():
                 tempList.append([x+i,y+i])
                 i += 1
             if self.board[x+i][y+i] == color:
+                if tempList != []:
+                    self.board[x+i][y+i] = '$'
                 for pair in tempList:
                     newX = pair[0]
                     newY = pair[1]
