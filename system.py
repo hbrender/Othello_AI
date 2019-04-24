@@ -108,12 +108,7 @@ class System():
                 if ready == "Q":
                     self.end_game()
                 else:
-                    start_time = time.time()
                     x,y = self.player.get_move(self)
-                    end_time = time.time()
-                    if (end_time-start_time > 10):
-                        print("Player forefits game")
-                        exit(0)
                     moveX = x
                     moveY = y
                     moveC = self.player.color
