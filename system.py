@@ -89,9 +89,12 @@ class System():
                     start_time = time.time()
                     x,y = self.AI.get_move(self)
                     end_time = time.time()
+                    total_time = format(end_time-start_time, '.2f')
                     if (end_time-start_time > 10):
+                        print("AI generated a move in " + total_time+ " seconds")
                         print("Player forefits game")
                         exit(0)
+                    print("AI generated a move in " + total_time + " seconds")
                     moveX = x
                     moveY = y
                     moveC = self.AI.color
