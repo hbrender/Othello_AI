@@ -4,12 +4,13 @@ class AI():
     def __init__(self):
         self.color = ""
         self.depth = 0
-        self.depth_look = 5
+        self.depth_look = 4
         self.dummy_board = []
         self.dummy_p_score = 0
         self.dummy_AI_score = 0
 
         self.state_num_to_list = {}
+        #states layout : [x_cord, y_cord, num_tokens_turned_over, depth, parent]
         self.states = {}
         
 
@@ -40,35 +41,51 @@ class AI():
 
        if self.color == 'B':
             p_color = 'W'
+            color_not_move = 'B'
        else:
             p_color = 'B'
+            color_not_move = 'W'
+
+       color_to_move = p_color
+
+       parent = 0
+
   
-       for _ in range(self.depth_look):
-            if _ == 0:
-                parent = 0
+       while self.states[parent][0][3] < self.depth_look:
+            if self.states[parent][0][3] % 2 == 0:
+                color_not_move = 'B'
+                color_to_move = 'W'
             else:
-                parent = i + 1
+                color_not_move = 'W'
+                color_to_move = 'B'
+
+
+
             #GENERATE TREE
-            self.depth += 1
-            for  move in possible_moves:
+            self.depth = self.states[parent][0][3] + 1
+            for move in possible_moves:
                 i += 1
                 #change board so that it looks like the current board in the system
-                self.dummy_change_board(move[0],move[1],self.color)
 
+                self.dummy_change_board(move[0],move[1], color_not_move)
 
                 #keep track of them the same way we did in the A/B pruning homework, with a ditionary
                 self.state_num_to_list[i] = copy.deepcopy(self.dummy_board)
                 
                 #self.states[i] = self.get_eligable_moves(p_color)
-                move_holder = self.get_eligable_moves(p_color)
+                move_holder = self.get_eligable_moves(color_to_move)
                 for row in move_holder:
                     row.append(parent)
                 self.states[i] = move_holder
                 
-                
-                self.dummy_board = copy.deepcopy(self.state_num_to_list[0])
+                self.dummy_board = copy.deepcopy(self.state_num_to_list[parent])
+
+            self.dummy_board = copy.deepcopy(self.state_num_to_list[parent + 1])
+            possible_moves = self.states[parent+1]
 
 
+            parent = parent + 1
+            
             for key, val in self.state_num_to_list.items():
                 print(key, "=>")
                 for item in val:
