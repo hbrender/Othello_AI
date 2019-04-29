@@ -4,16 +4,22 @@ class Player():
         self.color = ""
 
     def get_move(self, s):
-        x = int(raw_input("Enter row position (1-8): "))
+        x = -1
         while x < 0 or x > 8:
-            print("Error -> invalid row position")
-            x = int(raw_input("Enter row position (1-8): "))
-        
-        y = raw_input("Enter column position (A-H): ")
+            try:
+                x = int(raw_input("Enter row position (1-8): "))
+            except ValueError:
+                print("Error -> invalid row position")
+
+
+        y = 'Z'
         eligable_col = ['A','B','C','D','E','F','G','H']
         while y not in eligable_col:
-            print("Error -> invalid column position")
-            y = raw_input("Enter column position (A-H): ")
+            try:
+                y = raw_input("Enter column position (A-H): ")
+            except ValueError:
+                print("ERROR -> invalid column postion")
+
         y = ord(y) - 65
 
         

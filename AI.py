@@ -57,22 +57,14 @@ class AI():
             #    else:
             #       list_of_vals.append(move[2])
             #print(list_of_vals)
-        print("AI Move ->  " + str(possible_moves[move_index][0]) +  " " + str(chr(possible_moves[move_index][1]+65)))
+        print("AI Move ->  " + str(possible_moves[move_index][0] + 1) +  " " + str(chr(possible_moves[move_index][1]+65)))
     
         return possible_moves[move_index][0], possible_moves[move_index][1]
         
             
             
-    
-        
-        
-        
-        #return possible_moves[0][0], possible_moves[0][1]
-    
-
     def prune_the_tree(self):
         self.maxVal(0, None, None)
-        #print(final_move)
 
     def generate_tree(self, possible_moves):
        i = 0
@@ -97,50 +89,52 @@ class AI():
            child[3] = 0
 
        color_to_move = p_color
-       
-       while self.states[parent][0][3] < self.depth_look:
-            if self.states[parent][0][3] % 2 == 0:
-                color_not_move = 'B'
-                color_to_move = 'W'
-            else:
-                color_not_move = 'W'
-                color_to_move = 'B'
+       try: 
+           while self.states[parent][0][3] < self.depth_look:
+                if self.states[parent][0][3] % 2 == 0:
+                    color_not_move = 'B'
+                    color_to_move = 'W'
+                else:
+                    color_not_move = 'W'
+                    color_to_move = 'B'
 
-            if color_to_move != p_color:
-                negate = False
-            else:
-                negate = True
+                if color_to_move != p_color:
+                    negate = False
+                else:
+                    negate = True
 
-            #GENERATE TREE
-            self.depth = self.states[parent][0][3] + 1
-            for move in possible_moves:
-                i += 1
-                move.append(i)
-                #change board so that it looks like the current board in the system
+                #GENERATE TREE
+                self.depth = self.states[parent][0][3] + 1
+                for move in possible_moves:
+                    i += 1
+                    move.append(i)
+                    #change board so that it looks like the current board in the system
 
-                self.dummy_change_board(move[0],move[1], color_not_move)
+                    self.dummy_change_board(move[0],move[1], color_not_move)
 
-                #keep track of them the same way we did in the A/B pruning homework, with a ditionary
-                self.state_num_to_list[i] = copy.deepcopy(self.dummy_board)
-                
-                #self.states[i] = self.get_eligable_moves(p_color)
-                move_holder = self.get_eligable_moves(color_to_move)
-                for row in move_holder:
-                    #check it it needs to be negated
-                    if negate:
-                        row[2] = -(row[2])
+                    #keep track of them the same way we did in the A/B pruning homework, with a ditionary
+                    self.state_num_to_list[i] = copy.deepcopy(self.dummy_board)
+                    
+                    #self.states[i] = self.get_eligable_moves(p_color)
+                    move_holder = self.get_eligable_moves(color_to_move)
+                    for row in move_holder:
+                        #check it it needs to be negated
+                        if negate:
+                            row[2] = -(row[2])
 
-                    #add parent
-                    row.append(parent)
-                self.states[i] = move_holder
-                
-                self.dummy_board = copy.deepcopy(self.state_num_to_list[parent])
+                        #add parent
+                        row.append(parent)
+                    self.states[i] = move_holder
+                    
+                    self.dummy_board = copy.deepcopy(self.state_num_to_list[parent])
 
-            self.dummy_board = copy.deepcopy(self.state_num_to_list[parent + 1])
-            possible_moves = self.states[parent+1]
+                self.dummy_board = copy.deepcopy(self.state_num_to_list[parent + 1])
+                possible_moves = self.states[parent+1]
 
 
-            parent = parent + 1
+                parent = parent + 1
+       except IndexError:
+           pass
 
     def maxVal(self, node,alpha,beta):
         
@@ -200,8 +194,11 @@ class AI():
                 try:
                     i = 1
                     while self.dummy_board[x-i][y] != color and self.dummy_board[x-i][y] != '-':
-                        i += 1
-                    if self.dummy_board[x-i][y]  == color and i > 1:
+                        if x-i > -1:
+                            i += 1
+                        else:
+                            break
+                    if self.dummy_board[x-i][y]  == color and i > 1 and x-i > -1:
                         move=True
                         total += i - 1
                 except IndexError:
@@ -234,8 +231,11 @@ class AI():
                        
                     i = 1
                     while self.dummy_board[x][y-i] != color and self.dummy_board[x][y-i] != '-':
-                        i += 1
-                    if self.dummy_board[x][y-i] == color and i > 1:
+                        if y-i > -1:
+                            i += 1
+                        else:
+                            break
+                    if self.dummy_board[x][y-i] == color and i > 1 and y-i > -1:
                         move=True
                         total += i - 1
                 except IndexError:
@@ -246,8 +246,11 @@ class AI():
                     #CHECK DIAGNOALS
                     i = 1
                     while self.dummy_board[x-i][y-i] != color and self.dummy_board[x-i][y-i] != '-':
-                        i += 1
-                    if self.dummy_board[x-i][y-i] == color and i > 1:
+                        if x-i > -1 and y-i > -1:
+                            i += 1
+                        else:
+                            break
+                    if self.dummy_board[x-i][y-i] == color and i > 1 and x-i > -1 and y-i > -1:
                         move=True
                         total += i - 1
                 except IndexError:
@@ -257,8 +260,11 @@ class AI():
                 try:
                     i = 1
                     while self.dummy_board[x+i][y-i] != color and self.dummy_board[x+i][y-i] != '-':
-                        i += 1
-                    if self.dummy_board[x+i][y-i] == color and i > 1:
+                        if y-i > -1:
+                            i += 1
+                        else:
+                            break
+                    if self.dummy_board[x+i][y-i] == color and i > 1 and y-i > -1:
                        move=True
                        total += i - 1
                 except IndexError:
@@ -268,8 +274,11 @@ class AI():
                 try:
                     i = 1
                     while self.dummy_board[x-i][y+i] != color and self.dummy_board[x-i][y+i] != '-':
-                        i += 1
-                    if self.dummy_board[x-i][y+i] == color and i > 1:
+                        if x-i > -1:
+                            i += 1
+                        else:
+                            break
+                    if self.dummy_board[x-i][y+i] == color and i > 1 and x-i > -1:
                          move=True
                          total += i - 1
                 except IndexError:
