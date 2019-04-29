@@ -10,6 +10,7 @@ class AI():
         self.dummy_AI_score = 0
 
         self.state_num_to_list = {}
+
         #states layout : [x_cord, y_cord, num_tokens_turned_over, depth, parent]
         self.states = {}
         
@@ -49,7 +50,6 @@ class AI():
        color_to_move = p_color
 
        parent = 0
-
   
        while self.states[parent][0][3] < self.depth_look:
             if self.states[parent][0][3] % 2 == 0:
@@ -58,6 +58,11 @@ class AI():
             else:
                 color_not_move = 'W'
                 color_to_move = 'B'
+
+            if color_to_move != p_color:
+                negate = False
+            else:
+                negate = True
 
 
 
@@ -75,6 +80,11 @@ class AI():
                 #self.states[i] = self.get_eligable_moves(p_color)
                 move_holder = self.get_eligable_moves(color_to_move)
                 for row in move_holder:
+                    #check it it needs to be negated
+                    if negate:
+                        row[2] = -(row[2])
+
+                    #add parent
                     row.append(parent)
                 self.states[i] = move_holder
                 
