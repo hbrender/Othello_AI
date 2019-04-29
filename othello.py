@@ -8,6 +8,7 @@ def main():
     S = s.System(P, AI)
     
     print
+
     S.display_board()
     S.ask_config()
     S.ask_color()
