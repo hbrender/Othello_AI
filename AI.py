@@ -4,14 +4,14 @@ class AI():
     def __init__(self):
         self.color = ""
         self.depth = 0
-        self.depth_look = 3
+        self.depth_look = 2
         self.dummy_board = []
         self.dummy_p_score = 0
         self.dummy_AI_score = 0
 
         self.state_num_to_list = {}
 
-        #states layout : [x_cord, y_cord, num_tokens_turned_over, depth, parent]
+        #states layout : [x_cord, y_cord, num_tokens_turned_over, depth, parent, state_num]
         self.states = {}
         
 
@@ -21,6 +21,9 @@ class AI():
         self.dummy_board = copy.deepcopy(s.board)
 
         possible_moves = self.get_eligable_moves(self.color)
+        
+        if possible_moves == []:
+            return -1,-1
 
         if self.color == 'B':
             p_color = 'W'
@@ -31,12 +34,45 @@ class AI():
 
         self.prune_the_tree()
 
-        #self.return_best_move()
+        x,y = self.return_best_move(possible_moves)
+        return x,y
+        
+    def return_best_move(self, possible_moves):
+        total_values = [item[2] for item in self.states[0]]
+
+        for val in range(len(self.states[0])):
+            #print(self.states[0][val][5])
+            min_choice = min([choice[2] for choice in self.states[self.states[0][val][5]]])
+            total_values[val] += min_choice
+
+        max_move = max(total_values)
+        move_index = total_values.index(max_move)
+
+            
+            
+            #list_of_vals = []
+            #for move in val:
+            #    if len(move) < 5:
+            #        break
+            #    else:
+            #       list_of_vals.append(move[2])
+            #print(list_of_vals)
+        print("AI Move -> " + str(possible_moves[move_index][0]) +  " " + str(chr(possible_moves[move_index][1]+65)))
+    
+        return possible_moves[move_index][0], possible_moves[move_index][1]
+        
+            
+            
+    
+        
+        
+        
+        #return possible_moves[0][0], possible_moves[0][1]
+    
 
     def prune_the_tree(self):
-        self.maxVal( 0, None, None)
-        pass
-
+        self.maxVal(0, None, None)
+        #print(final_move)
 
     def generate_tree(self, possible_moves):
        i = 0
@@ -55,11 +91,13 @@ class AI():
        else:
             p_color = 'B'
             color_not_move = 'W'
+       
+       parent = 0
+       for child in self.states[0]:
+           child[3] = 0
 
        color_to_move = p_color
-
-       parent = 0
-  
+       
        while self.states[parent][0][3] < self.depth_look:
             if self.states[parent][0][3] % 2 == 0:
                 color_not_move = 'B'
@@ -72,8 +110,6 @@ class AI():
                 negate = False
             else:
                 negate = True
-
-
 
             #GENERATE TREE
             self.depth = self.states[parent][0][3] + 1
@@ -105,39 +141,21 @@ class AI():
 
 
             parent = parent + 1
-            
-            for key, val in self.state_num_to_list.items():
-                print(key, "=>")
-                for item in val:
-                    print(item)
-
-            for key, val in self.states.items():
-                print(key, "=>")
-                for item in val:
-                    print(item)
-
-
-
-
-
-
-
-
-
-
 
     def maxVal(self, node,alpha,beta):
+        
         print node
         
         #below check for leaf
          
-        if self.states[node][0][3] > self.depth_look - 2:
+        if self.states[node][0][3] == self.depth_look:
             return self.states[node][0][2]
 
-        #
         v = float("-inf")
         for child in self.states[node]:
+            
             v1 = self.minVal(child[5],alpha,beta)
+            
             if v is None or v1 > v:
                 v = v1
             if beta is not None:
@@ -145,19 +163,22 @@ class AI():
                     return v
             if alpha is None or v1 > alpha:
                 alpha = v1
+       
         return v
 
-
-
     def minVal(self, node,alpha,beta):
+        
+
         print node
 
-        if self.states[node][0][3] > self.depth_look - 2:
+        if self.states[node][0][3] == self.depth_look:
             return self.states[node][0][2]
 
         v = float("inf")
         for child in self.states[node]:
+            
             v1 = self.maxVal(child[5],alpha,beta)
+            
             if v is None or v1 < v:
                 v = v1
             if alpha is not None:
@@ -165,22 +186,8 @@ class AI():
                     return v
             if beta is None or v1 < beta:
                 beta = v1
+
         return v
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     def get_eligable_moves(self, color):
