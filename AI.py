@@ -57,7 +57,7 @@ class AI():
             #    else:
             #       list_of_vals.append(move[2])
             #print(list_of_vals)
-        print("AI Move -> " + str(possible_moves[move_index][0]) +  " " + str(chr(possible_moves[move_index][1]+65)))
+        print("AI Move ->  " + str(possible_moves[move_index][0]) +  " " + str(chr(possible_moves[move_index][1]+65)))
     
         return possible_moves[move_index][0], possible_moves[move_index][1]
         
