@@ -4,7 +4,7 @@ class AI():
     def __init__(self):
         self.color = ""
         self.depth = 0
-        self.depth_look = 4
+        self.depth_look = 3
         self.dummy_board = []
         self.dummy_p_score = 0
         self.dummy_AI_score = 0
@@ -29,16 +29,25 @@ class AI():
         #GEN TREE
         self.generate_tree(possible_moves)
 
-        #TODO
-        #self.prune_the_tree()
+        self.prune_the_tree()
 
         #self.return_best_move()
+
+    def prune_the_tree(self):
+        self.maxVal( 0, None, None)
+        pass
+
 
     def generate_tree(self, possible_moves):
        i = 0
 
+       counter = 0
+
        self.state_num_to_list[i] = copy.deepcopy(self.dummy_board)
        self.states[i] = possible_moves
+       for move in possible_moves:
+           move.append(0)
+
 
        if self.color == 'B':
             p_color = 'W'
@@ -70,6 +79,7 @@ class AI():
             self.depth = self.states[parent][0][3] + 1
             for move in possible_moves:
                 i += 1
+                move.append(i)
                 #change board so that it looks like the current board in the system
 
                 self.dummy_change_board(move[0],move[1], color_not_move)
@@ -107,13 +117,27 @@ class AI():
                     print(item)
 
 
-    def maxVal(graph,node,alpha,beta):
+
+
+
+
+
+
+
+
+
+    def maxVal(self, node,alpha,beta):
         print node
-        if isinstance(node,int):
-            return node
+        
+        #below check for leaf
+         
+        if self.states[node][0][3] > self.depth_look - 2:
+            return self.states[node][0][2]
+
+        #
         v = float("-inf")
-        for child in graph.get(node):
-            v1 = minVal(graph,child,alpha,beta)
+        for child in self.states[node]:
+            v1 = self.minVal(child[5],alpha,beta)
             if v is None or v1 > v:
                 v = v1
             if beta is not None:
@@ -123,13 +147,17 @@ class AI():
                 alpha = v1
         return v
 
-    def minVal(graph,node,alpha,beta):
+
+
+    def minVal(self, node,alpha,beta):
         print node
-        if isinstance(node,int):
-            return node
+
+        if self.states[node][0][3] > self.depth_look - 2:
+            return self.states[node][0][2]
+
         v = float("inf")
-        for child in graph.get(node):
-            v1 = maxVal(graph,child,alpha,beta)
+        for child in self.states[node]:
+            v1 = self.maxVal(child[5],alpha,beta)
             if v is None or v1 < v:
                 v = v1
             if alpha is not None:
@@ -138,6 +166,22 @@ class AI():
             if beta is None or v1 < beta:
                 beta = v1
         return v
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     def get_eligable_moves(self, color):
         move = False
