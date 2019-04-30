@@ -134,7 +134,7 @@ class AI():
                         row.append(parent)
                     print(i)
                     if move_holder == []:
-                        self.states[i] = [[-1,-1,-100,2,i]]
+                        self.states[i] = [[-1,-1,100,2,i]]
                     else:
                         self.states[i] = move_holder
                     print("self.states[i] : ", self.states[i])
