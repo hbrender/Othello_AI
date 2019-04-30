@@ -5,11 +5,18 @@ class System():
         self.board =  [['-' for j in range(8)] for i in range(8)]
         self.prior_board = [['-' for j in range(8)] for i in range(8)]
         self.place_start_tokens()
+        #self.test_board() TESTING
         
         self.p_score = 2
         self.a_score = 2
         self.prior_a_score = 2
         self.prior_p_score = 2
+        
+        ''' TESTING
+        self.p_score = 9
+        self.a_score = 47
+        self.prior_a_score = 7
+        self.prior_p_score = 48'''
         
         self.player = player
         self.AI = AI
@@ -38,6 +45,25 @@ class System():
         self.prior_board[4][4] = "B"
         self.prior_board[3][4] = "W"
     
+    def test_board(self):
+        # TESTING
+        self.board = [["B","B","B","B","B","B","B","B"],
+                      ["B","B","B","B","B","B","B","B"],
+                      ["B","B","B","B","B","W","B","B"],
+                      ["B","B","B","B","W","W","B","B"],
+                      ["B","B","B","B","W","W","B","B"],
+                      ["B","B","B","W","W","W","W","B"],
+                      ["B","B","B","B","-","-","-","-"],
+                      ["B","B","B","B","-","-","-","-"]]
+        self.prior_board = [["B","B","B","B","B","B","B","B"],
+                            ["B","B","B","B","B","B","B","B"],
+                            ["B","B","B","B","B","W","B","B"],
+                            ["B","B","B","B","W","W","B","B"],
+                            ["B","B","B","B","W","W","B","B"],
+                            ["B","B","B","W","W","B","-","B"],
+                            ["B","B","B","B","-","-","-","-"],
+                            ["B","B","B","B","-","-","-","-"]]
+
     def display_board(self):
         print
         print("  A B C D E F G H")
@@ -65,6 +91,7 @@ class System():
         else:
             self.AI.color = "W"
             self.turn = 'p'
+        #self.turn = 'a' TESTING
 
     def ask_config(self):
         answer = raw_input("Do you want switch board configuration? (Y/N) ")

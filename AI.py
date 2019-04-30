@@ -8,10 +8,18 @@ class AI():
         self.dummy_board = []
         self.dummy_p_score = 0
         self.dummy_AI_score = 0
+        self.weights = [[ 4,-3, 2, 2, 2, 2,-3, 4],
+                        [-3,-4,-1,-1,-1,-1,-4,-3],
+                        [ 2,-1, 1, 0, 0, 1,-1, 2],
+                        [ 2,-1, 0, 1, 1, 0,-1, 2],
+                        [ 2,-1, 0, 1, 1, 0,-1, 2],
+                        [ 2,-1, 1, 0, 0, 1,-1, 2],
+                        [-3,-4,-1,-1,-1,-1,-4,-3],
+                        [ 4,-3, 2, 2, 2, 2,-3, 4]]
 
         self.state_num_to_list = {}
 
-        #states layout : [x_cord, y_cord, num_tokens_turned_over, depth, parent, state_num]
+        #states layout : [x_cord, y_cord, num_tokens_turned_over + weigths, depth, parent, state_num]
         self.states = {}
         
 
@@ -19,8 +27,10 @@ class AI():
         self.dummy_p_score = s.p_score
         self.dummy_AI_score = s.a_score
         self.dummy_board = copy.deepcopy(s.board)
-
+        
+        print(self.color)
         possible_moves = self.get_eligable_moves(self.color)
+        print(possible_moves)
         
         if possible_moves == []:
             return -1,-1
@@ -60,8 +70,6 @@ class AI():
         print("AI Move ->  " + str(possible_moves[move_index][0] + 1) +  " " + str(chr(possible_moves[move_index][1]+65)))
     
         return possible_moves[move_index][0], possible_moves[move_index][1]
-        
-            
             
     def prune_the_tree(self):
         self.maxVal(0, None, None)
@@ -124,24 +132,34 @@ class AI():
 
                         #add parent
                         row.append(parent)
-                    self.states[i] = move_holder
+                    print(i)
+                    if move_holder == []:
+                        self.states[i] = [[-1,-1,-100,2,i]]
+                    else:
+                        self.states[i] = move_holder
+                    print("self.states[i] : ", self.states[i])
                     
                     self.dummy_board = copy.deepcopy(self.state_num_to_list[parent])
 
                 self.dummy_board = copy.deepcopy(self.state_num_to_list[parent + 1])
                 possible_moves = self.states[parent+1]
 
-
                 parent = parent + 1
        except IndexError:
            pass
+
+       for key, val in self.states.items():
+           print(key, "=>")
+           for item in val:
+               print(item)
+
 
     def maxVal(self, node,alpha,beta):
         
         print node
         
         #below check for leaf
-         
+        
         if self.states[node][0][3] == self.depth_look:
             return self.states[node][0][2]
 
@@ -299,7 +317,7 @@ class AI():
                 if move and self.dummy_board[x][y] == '-' :
                     #each eligable move will get here
                     #append the total amount that they change
-                    eligable_moves.append([x,y, total , self.depth])
+                    eligable_moves.append([x,y, total + self.weights[x][y] , self.depth])
                     
                     move = False
                 else:
