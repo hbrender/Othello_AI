@@ -66,7 +66,7 @@ class System():
     
     # determine colors of each player
     def ask_color(self):
-        color = raw_input("Asking P for color (W/B): ")
+        color = raw_input("Asking opponet AI for color (W/B): ")
         self.player.color = color
         print
         
@@ -96,8 +96,8 @@ class System():
         
 
             if self.turn == 'a':
-                print("AI is about to make a move.")
-                ready = raw_input("P are you ready? (Q for quit) ")
+                print("OUR AI is about to make a move.")
+                ready = raw_input("Is opponent AI ready? (Q for quit) ")
                 if ready == "Q":
                     self.end_game()
                 else:
@@ -106,28 +106,28 @@ class System():
                     end_time = time.time()
                     total_time = format(end_time-start_time, '.2f')
                     if (end_time-start_time > 10):
-                        print("AI generated a move in " + total_time + " seconds")
-                        print("Player forefits game")
+                        print("OUR AI generated a move in " + total_time + " seconds")
+                        print("OUR AI forefits game")
                         exit(0)
-                    print("AI generated a move in " + total_time + " seconds")
+                    print("OUR AI generated a move in " + total_time + " seconds")
                     moveX = x
                     moveY = y
                     moveC = self.AI.color
 
                     #below sees if we cannot move
                     if x == -1 and y == -1:
-                        print("Player AI cannot move")
+                        print("Our AI cannot move")
                         skip_turn = True
                     else:
                         self.board[x][y] = '$'
                     self.turn = 'p'
             else:
-                ready = raw_input("P are you ready to make a move? (Q for quit) ")
+                ready = raw_input("is Opponent AI ready to make a move? (Q for quit) ")
                 if ready == "Q":
                     self.end_game()
                 else:
                     # ask player if they can move
-                    answer = raw_input("Can P make a move? (Y/N) ")
+                    answer = raw_input("Can Opponent AI make a move? (Y/N) ")
                     if answer != "N":
                         x,y = self.player.get_move(self)
                         moveX = x
