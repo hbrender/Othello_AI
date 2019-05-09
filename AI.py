@@ -1,3 +1,10 @@
+'''
+    Class: CPSC 427
+    Team Member 1: Hanna Brender
+    Team Member 2: Reid Whitson
+    File Name: system.py
+'''
+
 import copy
 
 class AI():
@@ -9,6 +16,9 @@ class AI():
         self.dummy_p_score = 0
         self.dummy_AI_score = 0
         self.show_prune = False
+        
+        # heustic: weighted based on best board position
+        # from https://courses.cs.washington.edu/courses/cse573/04au/Project/mini1/RUSSIA/Final_Paper.pdf
         self.weights = [[ 4,-3, 2, 2, 2, 2,-3, 4],
                         [-3,-4,-1,-1,-1,-1,-4,-3],
                         [ 2,-1, 1, 0, 0, 1,-1, 2],
@@ -19,19 +29,20 @@ class AI():
                         [ 4,-3, 2, 2, 2, 2,-3, 4]]
 
         self.state_num_to_list = {}
-
         #states layout : [x_cord, y_cord, num_tokens_turned_over + weigths, depth, parent, state_num]
         self.states = {}
-        
 
+    # returns a x and y position for an Othello move
     def get_move(self,s):
         #set the current scores and get a copy of the board 
         self.dummy_p_score = s.p_score
         self.dummy_AI_score = s.a_score
         self.dummy_board = copy.deepcopy(s.board)
         
+        # gathers all possible moves
         possible_moves = self.get_eligable_moves(self.color)
         
+        # no possible moves generated
         if possible_moves == []:
             return -1,-1
 
@@ -44,14 +55,15 @@ class AI():
         self.generate_tree(possible_moves)
 
         #prune the tree 
-        #in the prune is where AB Pruning occurs
+        # AB Pruning occurs in prune_the_tree
         self.prune_the_tree()
 
         #find the best move
         x,y = self.return_best_move(possible_moves)
         
         return x,y
-        
+    
+    # finds best move and returns the x and y position
     def return_best_move(self, possible_moves):
         total_values = [item[2] for item in self.states[0]]
 
@@ -65,20 +77,19 @@ class AI():
         print("AI Move ->  " + str(possible_moves[move_index][0] + 1) +  " " + str(chr(possible_moves[move_index][1]+65)))
     
         return possible_moves[move_index][0], possible_moves[move_index][1]
-            
+    
+    # prunes the tree of moves using AB pruning
     def prune_the_tree(self):
         self.maxVal(0, None, None)
 
+    # generates the tree of possible moves to depth bound
     def generate_tree(self, possible_moves):
        i = 0
-
-       counter = 0
 
        self.state_num_to_list[i] = copy.deepcopy(self.dummy_board)
        self.states[i] = possible_moves
        for move in possible_moves:
            move.append(0)
-
 
        if self.color == 'B':
             p_color = 'W'
@@ -95,7 +106,8 @@ class AI():
 
        #create the tree based on our depth_look
        try: 
-           while self.states[parent][0][3] < self.depth_look: #or self.states[parent][0][0] == -1:
+           while self.states[parent][0][3] < self.depth_look:
+                # keep track of turn at each level
                 if self.states[parent][0][3] % 2 == 0:
                     color_not_move = 'B'
                     color_to_move = 'W'
@@ -112,29 +124,28 @@ class AI():
                 self.depth = self.states[parent][0][3] + 1
                 for move in possible_moves:
                     i += 1
-                    move.append(i)
+                    move.append(i) # appends the node number to end of move variables
+                    
                     #change board so that it looks like the current board in the system
-
                     self.dummy_change_board(move[0],move[1], color_not_move)
 
                     #keep track of them the same way we did in the A/B pruning homework, with a ditionary
                     self.state_num_to_list[i] = copy.deepcopy(self.dummy_board)
                     
+                    # gets the moves
                     move_holder = self.get_eligable_moves(color_to_move)
                     for row in move_holder:
-                        #check it it needs to be negated
+                        #check it it needs to be negated (so we can minimize the other player's score)
                         if negate:
                             row[2] = -(row[2])
-
                         #add parent
                         row.append(parent)
-
+                    # if no possible moves (no children) set default to guarentee this move is choosen
                     if move_holder == []:
                         self.states[i] = [[-1,-1,100,2,i]]
-                        
                     else:
                         self.states[i] = move_holder
-                    
+                    # update
                     self.dummy_board = copy.deepcopy(self.state_num_to_list[parent])
 
                 self.dummy_board = copy.deepcopy(self.state_num_to_list[parent + 1])
@@ -145,13 +156,10 @@ class AI():
            pass
 
 
-
+    # Where AB-Pruning occurs
     def maxVal(self, node,alpha,beta):
-        
         if self.show_prune:
             print node
-        
-        #below check for leaf
         
         if self.states[node][0][3] == self.depth_look:
             return self.states[node][0][2]
@@ -173,8 +181,8 @@ class AI():
            
         return v
 
+    # Where AB-Pruning occurs
     def minVal(self, node,alpha,beta):
-
         if self.show_prune:
             print node
 
@@ -200,11 +208,8 @@ class AI():
         return v
 
 
+    # create a list of all eligable moves and how many tokens each one turns over plus the weights (our heuristic)
     def get_eligable_moves(self, color):
-        '''
-        create a list of all eligable moves and 
-        how many tokens each one turns over
-        '''
         move = False
         eligable_moves = []
 
@@ -318,7 +323,8 @@ class AI():
 
                 if move and self.dummy_board[x][y] == '-' :
                     #each eligable move will get here
-                    #append the total amount that they change
+                    #append the total amount that they change + the weight of board positioning
+                    # this is where our heuristic is assigned
                     eligable_moves.append([x,y, total + self.weights[x][y] , self.depth])
                     
                     move = False
@@ -326,13 +332,8 @@ class AI():
                     move = False
         return eligable_moves
 
-
+    # Change the current "dummy board" to what it shoud be
     def dummy_change_board(self, x, y , color):
-        '''
-        Change the current "dummy board" to what it 
-        shoud be 
-        '''
-
         # for each square around it, check and see if it starts with the opposite
         # color and then ends with the true color
         if color == 'B':

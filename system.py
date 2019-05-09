@@ -1,3 +1,10 @@
+'''
+    Class: CPSC 427
+    Team Member 1: Hanna Brender
+    Team Member 2: Reid Whitson
+    File Name: system.py
+'''
+
 import time
 
 class System():
@@ -5,32 +12,19 @@ class System():
         self.board =  [['-' for j in range(8)] for i in range(8)]
         self.prior_board = [['-' for j in range(8)] for i in range(8)]
         self.place_start_tokens()
-#        self.test_board()
-        
+
         self.p_score = 2
         self.a_score = 2
         self.prior_a_score = 2
         self.prior_p_score = 2
-        '''self.p_score = 21
-        self.a_score = 40
-        self.prior_a_score = 2
-        self.prior_p_score = 2'''
-        
-        ''' TESTING
-        self.p_score = 9
-        self.a_score = 47
-        self.prior_a_score = 7
-        self.prior_p_score = 48'''
         
         self.player = player
         self.AI = AI
         
         self.turn = '' # p = players turn, a is ai turn
     
+    # set the initial board state
     def place_start_tokens(self):
-        '''
-        set the initial board state
-        '''
         self.board[3][3] = "W"
         self.board[4][3] = "B"
         self.board[4][4] = "W"
@@ -41,6 +35,7 @@ class System():
         self.prior_board[4][4] = "W"
         self.prior_board[3][4] = "B"
     
+    # switch board configuration at start of game
     def switch_config(self):
         self.board[3][3] = "B"
         self.board[4][3] = "W"
@@ -52,50 +47,7 @@ class System():
         self.prior_board[4][4] = "B"
         self.prior_board[3][4] = "W"
     
-    def test_board(self):
-        '''
-        self.board = [["B","B","B","B","B","B","B","B"],
-                      ["B","B","B","B","B","B","B","B"],
-                      ["B","B","B","B","B","W","B","B"],
-                      ["B","B","B","B","W","W","B","B"],
-                      ["B","B","B","B","W","W","B","B"],
-                      ["B","B","B","W","W","W","W","B"],
-                      ["B","B","B","B","-","-","-","-"],
-                      ["B","B","B","B","-","-","-","-"]]
-        self.prior_board = [["B","B","B","B","B","B","B","B"],
-                            ["B","B","B","B","B","B","B","B"],
-                            ["B","B","B","B","B","W","B","B"],
-                            ["B","B","B","B","W","W","B","B"],
-                            ["B","B","B","B","W","W","B","B"],
-                            ["B","B","B","W","W","B","-","B"],
-                            ["B","B","B","B","-","-","-","-"],
-                            ["B","B","B","B","-","-","-","-"]]'''
-        self.board = [["B","B","B","B","B","B","_","B"],
-                          ["B","B","W","W","W","W","_","B"],
-                          ["B","B","B","B","B","W","W","B"],
-                          ["B","W","B","B","B","W","B","B"],
-                          ["B","W","B","B","W","B","B","B"],
-                          ["B","W","B","W","B","W","B","B"],
-                          ["B","B","W","W","W","B","B","B"],
-                          ["B","-","W","W","W","W","B","B"]]
-    
-        self.board = [["-","-","-","B","B","B","-","-"],
-                  ["-","-","B","B","B","-","-","-"],
-                  ["-","B","B","B","B","B","-","-"],
-                  ["-","-","B","W","B","B","B","B"],
-                  ["-","-","B","W","B","B","B","B"],
-                  ["-","-","B","W","B","B","B","-"],
-                  ["-","-","B","W","-","-","-","-"],
-                  ["-","-","-","-","-","-","-","-"]]
-        self.prior_board = [["-","-","-","B","B","B","-","-"],
-                            ["-","-","B","B","B","-","-","-"],
-                            ["-","B","B","B","B","B","-","-"],
-                            ["-","-","B","W","B","B","B","B"],
-                            ["-","-","B","B","B","B","B","B"],
-                            ["-","-","B","B","B","B","B","-"],
-                            ["-","-","B","-","-","-","-","-"],
-                            ["-","-","-","-","-","-","-","-"]]
-    
+    # displays an Othello board
     def display_board(self):
         print
         print("  A B C D E F G H")
@@ -112,6 +64,7 @@ class System():
             print("Black score: " + str(self.a_score))
         print
     
+    # determine colors of each player
     def ask_color(self):
         color = raw_input("Asking P for color (W/B): ")
         self.player.color = color
@@ -124,12 +77,14 @@ class System():
             self.AI.color = "W"
             self.turn = 'p'
 
+    # allowing for configuration to be swapped at start
     def ask_config(self):
         answer = raw_input("Do you want switch board configuration? (Y/N) ")
         if answer == "Y":
             self.switch_config()
             self.display_board()
 
+    # play an Othello game
     def play_game(self):
         while(not self.board_full()):
             skip_turn = False
@@ -215,6 +170,7 @@ class System():
                                 self.board[x][y] = cur_color
                     self.display_board()
 
+    # update board scores
     def update_scores(self, x, y , color):
         # for each square around it, check and see if it starts with the opposite
         # color and then ends with the true color

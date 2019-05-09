@@ -1,3 +1,9 @@
+'''
+    Class: CPSC 427
+    Team Member 1: Hanna Brender
+    Team Member 2: Reid Whitson
+    File Name: player.py
+'''
 
 class Player():
     def __init__(self):
