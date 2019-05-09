@@ -86,13 +86,15 @@ class System():
 
     # play an Othello game
     def play_game(self):
-        while(not self.board_full()):
+        isGameNotOver = True
+        while(not self.board_full() and isGameNotOver):
             skip_turn = False
             # keep track of prior board
             for i in range(8):
                 for j in range(8):
                     self.prior_board[i][j] = self.board[i][j]
         
+
             if self.turn == 'a':
                 print("AI is about to make a move.")
                 ready = raw_input("P are you ready? (Q for quit) ")
@@ -169,6 +171,10 @@ class System():
                             if self.board[x][y] == '$':
                                 self.board[x][y] = cur_color
                     self.display_board()
+
+
+            if self.a_score == 0 or self.p_score == 0:
+                isGameNotOver = False
 
     # update board scores
     def update_scores(self, x, y , color):
@@ -373,6 +379,7 @@ class System():
                 else:
                     self.p_score += 1
                     self.a_score -= 1
+           
 
     def end_game(self):
         print
