@@ -5,7 +5,7 @@ class System():
         self.board =  [['-' for j in range(8)] for i in range(8)]
         self.prior_board = [['-' for j in range(8)] for i in range(8)]
         self.place_start_tokens()
-        #self.test_board()
+#        self.test_board()
         
         self.p_score = 2
         self.a_score = 2
@@ -28,6 +28,9 @@ class System():
         self.turn = '' # p = players turn, a is ai turn
     
     def place_start_tokens(self):
+        '''
+        set the initial board state
+        '''
         self.board[3][3] = "W"
         self.board[4][3] = "B"
         self.board[4][4] = "W"
@@ -81,7 +84,7 @@ class System():
                   ["-","B","B","B","B","B","-","-"],
                   ["-","-","B","W","B","B","B","B"],
                   ["-","-","B","W","B","B","B","B"],
-                  ["-","-","B","W","B","B","B","_"],
+                  ["-","-","B","W","B","B","B","-"],
                   ["-","-","B","W","-","-","-","-"],
                   ["-","-","-","-","-","-","-","-"]]
         self.prior_board = [["-","-","-","B","B","B","-","-"],
@@ -89,7 +92,7 @@ class System():
                             ["-","B","B","B","B","B","-","-"],
                             ["-","-","B","W","B","B","B","B"],
                             ["-","-","B","B","B","B","B","B"],
-                            ["-","-","B","B","B","B","B","_"],
+                            ["-","-","B","B","B","B","B","-"],
                             ["-","-","B","-","-","-","-","-"],
                             ["-","-","-","-","-","-","-","-"]]
     
@@ -120,7 +123,6 @@ class System():
         else:
             self.AI.color = "W"
             self.turn = 'p'
-        #self.turn = 'a'
 
     def ask_config(self):
         answer = raw_input("Do you want switch board configuration? (Y/N) ")
@@ -182,6 +184,7 @@ class System():
             self.prior_a_score = self.a_score
             self.prior_p_score = self.p_score
             
+            #see if turn skipped or not
             if not skip_turn:
                 self.update_scores(moveX, moveY, moveC)
                 self.display_board()

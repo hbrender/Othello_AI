@@ -8,6 +8,7 @@ class AI():
         self.dummy_board = []
         self.dummy_p_score = 0
         self.dummy_AI_score = 0
+        self.show_prune = False
         self.weights = [[ 4,-3, 2, 2, 2, 2,-3, 4],
                         [-3,-4,-1,-1,-1,-1,-4,-3],
                         [ 2,-1, 1, 0, 0, 1,-1, 2],
@@ -24,13 +25,12 @@ class AI():
         
 
     def get_move(self,s):
+        #set the current scores and get a copy of the board 
         self.dummy_p_score = s.p_score
         self.dummy_AI_score = s.a_score
         self.dummy_board = copy.deepcopy(s.board)
         
-        print(self.color)
         possible_moves = self.get_eligable_moves(self.color)
-        print(possible_moves)
         
         if possible_moves == []:
             return -1,-1
@@ -39,12 +39,17 @@ class AI():
             p_color = 'W'
         else:
             p_color = 'B'
-        #GEN TREE
+
+        #Generate the tree
         self.generate_tree(possible_moves)
 
-        #self.prune_the_tree()
+        #prune the tree 
+        #in the prune is where AB Pruning occurs
+        self.prune_the_tree()
 
+        #find the best move
         x,y = self.return_best_move(possible_moves)
+        
         return x,y
         
     def return_best_move(self, possible_moves):
@@ -57,13 +62,6 @@ class AI():
         max_move = max(total_values)
         move_index = total_values.index(max_move)
             
-            #list_of_vals = []
-            #for move in val:
-            #    if len(move) < 5:
-            #        break
-            #    else:
-            #       list_of_vals.append(move[2])
-            #print(list_of_vals)
         print("AI Move ->  " + str(possible_moves[move_index][0] + 1) +  " " + str(chr(possible_moves[move_index][1]+65)))
     
         return possible_moves[move_index][0], possible_moves[move_index][1]
@@ -94,6 +92,8 @@ class AI():
            child[3] = 0
 
        color_to_move = p_color
+
+       #create the tree based on our depth_look
        try: 
            while self.states[parent][0][3] < self.depth_look: #or self.states[parent][0][0] == -1:
                 if self.states[parent][0][3] % 2 == 0:
@@ -120,7 +120,6 @@ class AI():
                     #keep track of them the same way we did in the A/B pruning homework, with a ditionary
                     self.state_num_to_list[i] = copy.deepcopy(self.dummy_board)
                     
-                    #self.states[i] = self.get_eligable_moves(p_color)
                     move_holder = self.get_eligable_moves(color_to_move)
                     for row in move_holder:
                         #check it it needs to be negated
@@ -129,13 +128,12 @@ class AI():
 
                         #add parent
                         row.append(parent)
-                    print(i)
+
                     if move_holder == []:
                         self.states[i] = [[-1,-1,100,2,i]]
                         
                     else:
                         self.states[i] = move_holder
-                    print("self.states[i] : ", self.states[i])
                     
                     self.dummy_board = copy.deepcopy(self.state_num_to_list[parent])
 
@@ -146,15 +144,12 @@ class AI():
        except IndexError:
            pass
 
-       for key, val in self.states.items():
-           print(key, "=>")
-           for item in val:
-               print(item)
 
 
     def maxVal(self, node,alpha,beta):
         
-        print node
+        if self.show_prune:
+            print node
         
         #below check for leaf
         
@@ -163,44 +158,53 @@ class AI():
 
         v = float("-inf")
         for child in self.states[node]:
-            
-            v1 = self.minVal(child[5],alpha,beta)
-            
-            if v is None or v1 > v:
-                v = v1
-            if beta is not None:
-                if v1 >= beta:
-                    return v
-            if alpha is None or v1 > alpha:
-                alpha = v1
-       
+            try: 
+                v1 = self.minVal(child[5],alpha,beta)
+                
+                if v is None or v1 > v:
+                    v = v1
+                if beta is not None:
+                    if v1 >= beta:
+                        return v
+                if alpha is None or v1 > alpha:
+                    alpha = v1
+            except IndexError:
+                pass
+           
         return v
 
     def minVal(self, node,alpha,beta):
-        
 
-        print node
+        if self.show_prune:
+            print node
 
         if self.states[node][0][3] == self.depth_look:
             return self.states[node][0][2]
 
         v = float("inf")
         for child in self.states[node]:
-            
-            v1 = self.maxVal(child[5],alpha,beta)
-            
-            if v is None or v1 < v:
-                v = v1
-            if alpha is not None:
-                if v1 <= alpha:
-                    return v
-            if beta is None or v1 < beta:
-                beta = v1
+            try:
+                v1 = self.maxVal(child[5],alpha,beta)
+                
+                if v is None or v1 < v:
+                    v = v1
+                if alpha is not None:
+                    if v1 <= alpha:
+                        return v
+                if beta is None or v1 < beta:
+                    beta = v1
+
+            except IndexError:
+                pass
 
         return v
 
 
     def get_eligable_moves(self, color):
+        '''
+        create a list of all eligable moves and 
+        how many tokens each one turns over
+        '''
         move = False
         eligable_moves = []
 
@@ -324,6 +328,11 @@ class AI():
 
 
     def dummy_change_board(self, x, y , color):
+        '''
+        Change the current "dummy board" to what it 
+        shoud be 
+        '''
+
         # for each square around it, check and see if it starts with the opposite
         # color and then ends with the true color
         if color == 'B':
