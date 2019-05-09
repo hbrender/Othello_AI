@@ -42,7 +42,7 @@ class AI():
         #GEN TREE
         self.generate_tree(possible_moves)
 
-        self.prune_the_tree()
+        #self.prune_the_tree()
 
         x,y = self.return_best_move(possible_moves)
         return x,y
@@ -98,7 +98,7 @@ class AI():
 
        color_to_move = p_color
        try: 
-           while self.states[parent][0][3] < self.depth_look:
+           while self.states[parent][0][3] < self.depth_look or self.states[parent][0][0] == -1:
                 if self.states[parent][0][3] % 2 == 0:
                     color_not_move = 'B'
                     color_to_move = 'W'
