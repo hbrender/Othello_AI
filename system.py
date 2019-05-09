@@ -4,17 +4,17 @@ class System():
     def __init__(self, player, AI):
         self.board =  [['-' for j in range(8)] for i in range(8)]
         self.prior_board = [['-' for j in range(8)] for i in range(8)]
-        #self.place_start_tokens()
-        self.test_board()
+        self.place_start_tokens()
+        #self.test_board()
         
-        '''self.p_score = 2
+        self.p_score = 2
         self.a_score = 2
         self.prior_a_score = 2
-        self.prior_p_score = 2'''
-        self.p_score = 21
+        self.prior_p_score = 2
+        '''self.p_score = 21
         self.a_score = 40
         self.prior_a_score = 2
-        self.prior_p_score = 2
+        self.prior_p_score = 2'''
         
         ''' TESTING
         self.p_score = 9
@@ -75,6 +75,23 @@ class System():
                           ["B","W","B","W","B","W","B","B"],
                           ["B","B","W","W","W","B","B","B"],
                           ["B","-","W","W","W","W","B","B"]]
+    
+        self.board = [["-","-","-","B","B","B","-","-"],
+                  ["-","-","B","B","B","-","-","-"],
+                  ["-","B","B","B","B","B","-","-"],
+                  ["-","-","B","W","B","B","B","B"],
+                  ["-","-","B","W","B","B","B","B"],
+                  ["-","-","B","W","B","B","B","_"],
+                  ["-","-","B","W","-","-","-","-"],
+                  ["-","-","-","-","-","-","-","-"]]
+        self.prior_board = [["-","-","-","B","B","B","-","-"],
+                            ["-","-","B","B","B","-","-","-"],
+                            ["-","B","B","B","B","B","-","-"],
+                            ["-","-","B","W","B","B","B","B"],
+                            ["-","-","B","B","B","B","B","B"],
+                            ["-","-","B","B","B","B","B","_"],
+                            ["-","-","B","-","-","-","-","-"],
+                            ["-","-","-","-","-","-","-","-"]]
     
     def display_board(self):
         print

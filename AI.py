@@ -51,14 +51,11 @@ class AI():
         total_values = [item[2] for item in self.states[0]]
 
         for val in range(len(self.states[0])):
-            #print(self.states[0][val][5])
             min_choice = min([choice[2] for choice in self.states[self.states[0][val][5]]])
             total_values[val] += min_choice
 
         max_move = max(total_values)
         move_index = total_values.index(max_move)
-
-            
             
             #list_of_vals = []
             #for move in val:
@@ -98,7 +95,7 @@ class AI():
 
        color_to_move = p_color
        try: 
-           while self.states[parent][0][3] < self.depth_look or self.states[parent][0][0] == -1:
+           while self.states[parent][0][3] < self.depth_look: #or self.states[parent][0][0] == -1:
                 if self.states[parent][0][3] % 2 == 0:
                     color_not_move = 'B'
                     color_to_move = 'W'
@@ -135,6 +132,7 @@ class AI():
                     print(i)
                     if move_holder == []:
                         self.states[i] = [[-1,-1,100,2,i]]
+                        
                     else:
                         self.states[i] = move_holder
                     print("self.states[i] : ", self.states[i])
